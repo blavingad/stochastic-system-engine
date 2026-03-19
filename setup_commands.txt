@@ -1,0 +1,95 @@
+==============================
+STOCHASTIC SYSTEMS ENGINE SETUP
+==============================
+
+1. CREATE PROJECT
+-----------------
+mkdir stochastic-systems-engine
+cd stochastic-systems-engine
+
+2. CONFIGURE POETRY (once)
+--------------------------
+poetry config virtualenvs.in-project true
+
+3. INITIALIZE PROJECT
+---------------------
+poetry init
+
+4. ADD DEPENDENCIES
+-------------------
+poetry add numpy pandas yfinance scipy matplotlib
+poetry add --group dev pytest
+
+5. CREATE PROJECT STRUCTURE
+---------------------------
+mkdir -p src/stochastic_systems_engine/{data,models,pricing,utils}
+mkdir -p scripts tests
+
+touch README.md .gitignore
+
+touch src/stochastic_systems_engine/__init__.py
+touch src/stochastic_systems_engine/config.py
+touch src/stochastic_systems_engine/types.py
+
+touch src/stochastic_systems_engine/data/__init__.py
+touch src/stochastic_systems_engine/data/base.py
+touch src/stochastic_systems_engine/data/yahoo_loader.py
+
+touch src/stochastic_systems_engine/models/__init__.py
+touch src/stochastic_systems_engine/models/volatility.py
+touch src/stochastic_systems_engine/models/gbm.py
+
+touch src/stochastic_systems_engine/pricing/__init__.py
+touch src/stochastic_systems_engine/pricing/european.py
+touch src/stochastic_systems_engine/pricing/monte_carlo.py
+touch src/stochastic_systems_engine/pricing/black_scholes.py
+
+touch src/stochastic_systems_engine/utils/__init__.py
+touch src/stochastic_systems_engine/utils/math.py
+
+touch scripts/run_brent_call_pricer.py
+touch tests/test_black_scholes.py
+touch tests/test_monte_carlo.py
+
+6. FIX pyproject.toml
+---------------------
+Ensure this line exists under [tool.poetry]:
+
+packages = [{ include = "stochastic_systems_engine", from = "src" }]
+
+7. INSTALL ENVIRONMENT
+----------------------
+poetry lock
+poetry install
+
+8. RUN PROJECT
+--------------
+poetry run python scripts/run_brent_call_pricer.py
+
+9. RUN TESTS
+------------
+poetry run pytest
+
+10. OPEN IN VS CODE
+-------------------
+code .
+
+Then:
+- Ctrl+Shift+P
+- "Python: Select Interpreter"
+- choose .venv/bin/python
+
+11. COMMON COMMANDS
+-------------------
+poetry install
+poetry add <package>
+poetry add --group dev <package>
+poetry run python <script>
+poetry run pytest
+poetry lock
+
+12. CLEAN ENV (IF NEEDED)
+-------------------------
+poetry env list
+poetry env remove python
+poetry install
